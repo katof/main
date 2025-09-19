@@ -1,303 +1,337 @@
 <!doctype html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ITDD Aarhus – Hvem er jeg?</title>
-  <style>
-    /* --- Scoped styles: nothing leaks outside .itdd-game --- */
-    .itdd-game{--bg:#0b0b10;--panel:#11131a;--panel-2:#171a22;--text:#ffffff;--muted:#9aa3b2;--accent:#6ee7b7;--wrong:#ff8da1;--ring:#2a2f3a;--focus:#93c5fd;font:16px/1.5 system-ui,Segoe UI,Roboto,Inter,Arial;color:var(--text)}
-    .itdd-game *{box-sizing:border-box}
-    .itdd-game .wrap{max-width:880px;margin:32px auto;padding:20px;background:linear-gradient(180deg,#0b0b10,#0e1016);border-radius:18px}
-    .itdd-game .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--ring);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .itdd-game header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--ring);gap:12px}
-    .itdd-game header h1{font-size:22px;margin:0;letter-spacing:.2px}
-    .itdd-game header .tag{font-size:12px;color:var(--muted);background:#0d0f15;border:1px solid var(--ring);padding:4px 8px;border-radius:999px;white-space:nowrap}
-    .itdd-game .panel{padding:18px}
-    .itdd-game .muted{color:var(--muted)}
-    .itdd-game .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    .itdd-game .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .itdd-game .btn{appearance:none;border:1px solid var(--ring);background:#0f1218;color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:650}
-    .itdd-game .btn:hover{background:#111622}
-    .itdd-game .btn:disabled{opacity:.55;cursor:not-allowed}
-    .itdd-game .btn.primary{background:var(--text);color:#0b0b10;border-color:transparent}
-    .itdd-game .btn.primary:hover{filter:brightness(.93)}
-    .itdd-game .btn.ghost{background:transparent}
-    .itdd-game .kpi{font-size:14px;color:var(--muted)}
-    .itdd-game .kpi b{color:var(--text)}
-    .itdd-game .q h3{margin:12px 0 8px}
-    .itdd-game ul.punkter{margin:0;padding:0 0 0 22px}
-    .itdd-game ul.punkter li{margin:4px 0}
-    .itdd-game .opt{border:1px solid var(--ring);padding:10px 12px;border-radius:12px;background:#0e1118;color:var(--text);font-weight:700;cursor:pointer;text-align:center}
-    .itdd-game .opt:hover{background:#10131b}
-    .itdd-game .opt[aria-selected="true"], .itdd-game .opt:focus{outline:2px solid var(--focus);outline-offset:2px}
-    .itdd-game .opt.correct{border-color:#1faa84;background:rgba(110,231,183,.12)}
-    .itdd-game .opt.wrong{border-color:#d23c57;background:rgba(255,141,161,.12)}
-    .itdd-game .feedback{min-height:22px;font-weight:800}
-    .itdd-game footer{padding:12px 18px;border-top:1px solid var(--ring);display:flex;justify-content:space-between;align-items:center}
-    .itdd-game .progress{height:8px;background:#0f1117;border-radius:999px;overflow:hidden;border:1px solid var(--ring)}
-    .itdd-game .bar{height:100%;width:0%;background:linear-gradient(90deg,#22d3ee,#6ee7b7);transition:width .35s ease}
-    .itdd-game .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .itdd-game .switch{display:inline-flex;align-items:center;gap:8px;font-size:14px}
-    .itdd-game .switch input{appearance:none;width:38px;height:22px;border-radius:999px;background:#11131a;border:1px solid var(--ring);position:relative;outline:none;cursor:pointer}
-    .itdd-game .switch input:checked{background:#164e3f}
-    .itdd-game .switch input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:999px;background:#cbd5e1;transition:transform .2s ease}
-    .itdd-game .switch input:checked::after{transform:translateX(16px);background:#a7f3d0}
-    /* mini confetti */
-    .itdd-game .confetti{position:fixed;left:50%;top:80px;pointer-events:none}
-    .itdd-game .confetti span{position:absolute;animation:fall 1.2s ease-in forwards}
-    @keyframes fall{to{transform:translate(var(--x,0), 180px) rotate(340deg);opacity:0}}
-    .itdd-game .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media (max-width:560px){.itdd-game .grid{grid-template-columns:1fr}}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ITDD Aarhus – Hvem er jeg?</title>
+<style>
+/* ===========================
+   ITDD "Hvem er jeg?" (scoped)
+   Intet lækker uden for .itdd-game
+   =========================== */
+.itdd-game{--bg:#0b0b10;--panel:#11131a;--panel-2:#171a22;--text:#ffffff;--muted:#9aa3b2;--accent:#6ee7b7;--wrong:#ff8da1;--ring:#2a2f3a;--focus:#93c5fd;font:16px/1.5 system-ui,Segoe UI,Roboto,Inter,Arial;color:var(--text)}
+.itdd-game *{box-sizing:border-box}
+.itdd-game .wrap{max-width:880px;margin:24px auto;padding:20px;background:linear-gradient(180deg,#0b0b10,#0e1016);border-radius:18px}
+.itdd-game .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--ring);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.itdd-game header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--ring);gap:12px}
+.itdd-game header h1{font-size:22px;margin:0;letter-spacing:.2px}
+.itdd-game header .tag{font-size:12px;color:var(--muted);background:#0d0f15;border:1px solid var(--ring);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.itdd-game .panel{padding:18px}
+.itdd-game .muted{color:var(--muted)}
+.itdd-game .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.itdd-game .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.itdd-game .btn{appearance:none;border:1px solid var(--ring);background:#0f1218;color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:650}
+.itdd-game .btn:hover{background:#111622}
+.itdd-game .btn:disabled{opacity:.55;cursor:not-allowed}
+.itdd-game .btn.primary{background:var(--text);color:#0b0b10;border-color:transparent}
+.itdd-game .btn.primary:hover{filter:brightness(.93)}
+.itdd-game .btn.ghost{background:transparent}
+.itdd-game .kpi{font-size:14px;color:var(--muted)}
+.itdd-game .kpi b{color:var(--text)}
+.itdd-game .q h3{margin:12px 0 8px}
+.itdd-game ul.punkter{margin:0;padding:0 0 0 22px}
+.itdd-game ul.punkter li{margin:4px 0}
+.itdd-game .opt{border:1px solid var(--ring);padding:10px 12px;border-radius:12px;background:#0e1118;color:var(--text);font-weight:700;cursor:pointer;text-align:center}
+.itdd-game .opt:hover{background:#10131b}
+.itdd-game .opt[aria-selected="true"], .itdd-game .opt:focus{outline:2px solid var(--focus);outline-offset:2px}
+.itdd-game .opt.correct{border-color:#1faa84;background:rgba(110,231,183,.12)}
+.itdd-game .opt.wrong{border-color:#d23c57;background:rgba(255,141,161,.12)}
+.itdd-game .feedback{min-height:22px;font-weight:800}
+.itdd-game footer{padding:12px 18px;border-top:1px solid var(--ring);display:flex;justify-content:space-between;align-items:center}
+.itdd-game .progress{height:8px;background:#0f1117;border-radius:999px;overflow:hidden;border:1px solid var(--ring)}
+.itdd-game .bar{height:100%;width:0%;background:linear-gradient(90deg,#22d3ee,#6ee7b7);transition:width .35s ease}
+.itdd-game .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.itdd-game .switch{display:inline-flex;align-items:center;gap:8px;font-size:14px}
+.itdd-game .switch input{appearance:none;width:38px;height:22px;border-radius:999px;background:#11131a;border:1px solid var(--ring);position:relative;outline:none;cursor:pointer}
+.itdd-game .switch input:checked{background:#164e3f}
+.itdd-game .switch input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:999px;background:#cbd5e1;transition:transform .2s ease}
+.itdd-game .switch input:checked::after{transform:translateX(16px);background:#a7f3d0}
+/* mini confetti */
+.itdd-game .confetti{position:relative;height:0}
+.itdd-game .confetti span{position:fixed;left:50%;top:80px;pointer-events:none;animation:fall 1.1s ease-in forwards}
+@keyframes fall{to{transform:translate(var(--x,0), 180px) rotate(340deg);opacity:0}}
+.itdd-game .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width:560px){.itdd-game .grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-  <div class="itdd-game">
-    <div class="wrap card" role="application" aria-labelledby="title">
-      <header>
-        <h1 id="title">ITDD Aarhus – Hvem er jeg?</h1>
-        <span class="tag">Gæt & lær</span>
-      </header>
 
-      <div class="panel">
-        <p class="muted" id="intro">Klik <b>Start</b>, læs tre <b>punkter</b>, og vælg personen. Ét point pr. rigtigt svar.</p>
-        <div class="row">
-          <div class="controls" aria-label="Indstillinger">
-            <label class="switch"><input id="hard" type="checkbox" aria-label="Svær tilstand">Svær tilstand</label>
-            <button id="shuffleBtn" class="btn ghost" type="button" title="Bland rækkefølgen">🔀 Bland</button>
-            <label class="switch"><input id="autoNext" type="checkbox" aria-label="Gå automatisk videre" checked>Auto‑næste</label>
-          </div>
-          <button id="start" class="btn primary" type="button">Start</button>
+<div class="itdd-game" id="itdd-game-embed" role="application" aria-labelledby="game-title">
+  <div class="wrap card">
+    <header>
+      <h1 id="game-title">ITDD Aarhus – Hvem er jeg?</h1>
+      <span class="tag">Gæt & lær</span>
+    </header>
+
+    <div class="panel">
+      <p class="muted" id="intro">Klik <b>Start</b>, læs tre <b>punkter</b>, og vælg personen. Ét point pr. rigtigt svar.</p>
+      <div class="row">
+        <div class="controls" aria-label="Indstillinger">
+          <label class="switch"><input id="hard" type="checkbox" aria-label="Svær tilstand">Svær tilstand</label>
+          <button id="shuffleBtn" class="btn ghost" type="button" title="Bland rækkefølgen">🔀 Bland</button>
+          <label class="switch"><input id="autoNext" type="checkbox" aria-label="Gå automatisk videre" checked>Auto-næste</label>
         </div>
-        <div class="progress" aria-hidden="true" style="margin-top:10px"><div id="bar" class="bar"></div></div>
+        <button id="start" class="btn primary" type="button">Start</button>
       </div>
-
-      <div id="game" class="panel" hidden>
-        <div class="row kpi" aria-live="polite">
-          <div>Runde <b id="round">1</b>/<span id="total">4</span></div>
-          <div>Point: <b id="score">0</b> &middot; Bedste: <b id="best">0</b></div>
-        </div>
-
-        <div class="q">
-          <h3>Hvem beskrives af disse <b>punkter</b>?</h3>
-          <ul id="punkter" class="punkter" aria-describedby="punkterhelp"></ul>
-          <span id="punkterhelp" class="sr-only">Tre korte punkter, gæt hvilken person de beskriver.</span>
-        </div>
-
-        <div id="options" class="grid" role="listbox" aria-label="Mulige personer"></div>
-
-        <div class="row" style="margin-top:10px">
-          <div id="feedback" class="feedback" aria-live="polite"></div>
-          <div class="controls">
-            <button id="hint" class="btn ghost" type="button" title="Vis et hint">💡 Hint</button>
-            <button id="next" class="btn" type="button" disabled>Næste</button>
-          </div>
-        </div>
-      </div>
-
-      <footer>
-        <small class="muted">Gæt hvem vi er!</small>
-        <small class="muted">Lavet af 4Ø4‑holdet ✨</small>
-      </footer>
+      <div class="progress" aria-hidden="true" style="margin-top:10px"><div id="bar" class="bar"></div></div>
     </div>
 
-    <div id="confetti" class="confetti" aria-hidden="true"></div>
+    <div id="game" class="panel" hidden>
+      <div class="row kpi" aria-live="polite">
+        <div>Runde <b id="round">1</b>/<span id="total">4</span></div>
+        <div>Point: <b id="score">0</b> &middot; Bedste: <b id="best">0</b></div>
+      </div>
+
+      <div class="q">
+        <h3>Hvem beskrives af disse <b>punkter</b>?</h3>
+        <ul id="punkter" class="punkter" aria-describedby="punkterhelp"></ul>
+        <span id="punkterhelp" class="sr-only">Tre korte punkter, gæt hvilken person de beskriver.</span>
+      </div>
+
+      <div id="options" class="grid" role="listbox" aria-label="Mulige personer"></div>
+
+      <div class="row" style="margin-top:10px">
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+        <div class="controls">
+          <button id="hint" class="btn ghost" type="button" title="Vis et hint">💡 Hint</button>
+          <button id="next" class="btn" type="button" disabled>Næste</button>
+        </div>
+      </div>
+
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+    </div>
+
+    <footer>
+      <small class="muted">Gæt hvem vi er!</small>
+      <small class="muted">Lavet af 4Ø4-holdet ✨</small>
+    </footer>
   </div>
+</div>
 
-  <script>
-    // DATA – kun "punkter"
-    const PEOPLE = [
-      { id: "ditte", navn: "Ditte", punkter: [
-          "Jeg er uddannet lærer og har været klasselærer.",
-          "Jeg drømmer om at kombinere pædagogik med IT‑didaktik.",
-          "Jeg elsker at lave mad – og nørder tilbudsaviser!",
-        ] },
-      { id: "maya", navn: "Maya", punkter: [
-          "Jeg bor i Kolding med kæreste og datter.",
-          "Jeg er socialpædagog – nu ITDD‑studerende.",
-          "Jeg elsker mad, men hader at lave det.",
-        ] },
-      { id: "karina", navn: "Karina", punkter: [
-          "Jeg bor på Færøerne og arbejder som redaktør.",
-          "Jeg nørder læring – fra mikrobiologi til krigsstrategi.",
-          "Når det kommer til mad, er jeg ret afslappet – alt er godt!",
-        ] },
-      { id: "bruno", navn: "Bruno", punkter: [
-          "Jeg samler vinyl og gæster ofte festivaler og koncerter.",
-          "Jeg taler i højttalerne på BK FREM’s stadion.",
-          "Jeg arbejder som digitaliseringskonsulent.",
-        ] },
-    ];
+<script>
+/* ===== Utilities (scoped selectors) ===== */
+const $  = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const rand = (n) => Math.floor(Math.random()*n);
+const shuffle = (arr) => { const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=rand(i+1); [a[i],a[j]]=[a[j],a[i]] } return a; };
+const sample = (arr, n) => shuffle(arr).slice(0, n);
 
-    // Utils
-    const $ = (q, el=document) => el.querySelector(q);
-    const $$ = (q, el=document) => [...el.querySelectorAll(q)];
-    const shuffle = (arr) => arr.map(v => [Math.random(), v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
-    const sample = (arr, n) => shuffle(arr).slice(0, n);
+/* ===== DATA – 4 personer, 3 punkter hver (fra jeres beskrivelser) ===== */
+const PEOPLE = [
+  {
+    id: "maya", navn: "Maya",
+    punkter: [
+      "25 år, bor i Kolding med kæreste og datter.",
+      "Uddannet socialpædagog – læser nu på ITDD.",
+      "Har en lille negle-biks og elsker at være kreativ."
+    ]
+  },
+  {
+    id: "ditte", navn: "Ditte",
+    punkter: [
+      "28 år og bosat i Odense.",
+      "Uddannet lærer og tidligere klasselærer.",
+      "Vil kombinere lærerfaget med IT-didaktiske greb og værktøjer."
+    ]
+  },
+  {
+    id: "karina", navn: "Karina",
+    punkter: [
+      "Bor i Kollafjørður på Færøerne.",
+      "Oprindeligt lærer, nu redaktør – nørder læring fra mikrobiologi til krigsstrategi.",
+      "Afslappet omkring mad – har ingen klare favoritter."
+    ]
+  },
+  {
+    id: "bruno", navn: "Bruno",
+    punkter: [
+      "Bor på Nørrebro og arbejder som digitaliseringskonsulent i Vallensbæk Kommune.",
+      "Musiknørd: festivaler, koncerter og vinyl – plus grafisk design, DJ’ing, elektronik og upcycling.",
+      "Svømmer, løber, læser om kreativitet/adfærd/uddannelse – speaker på BK FREM’s stadion."
+    ]
+  }
+];
 
-    // State
-    let rounds = [];
-    let step = 0;
-    let score = 0;
-    let best = Number(localStorage.getItem('bestScore')||0);
-    let autoTimer = null;
+/* ===== State ===== */
+let rounds = [];
+let step = 0;
+let score = 0;
+let best = Number(localStorage.getItem('itdd_bestScore')||0);
+let autoTimer = null;
 
-    // DOM refs
-    const startBtn = $('#start');
-    const shuffleBtn = $('#shuffleBtn');
-    const game = $('#game');
-    const roundEl = $('#round');
-    const totalEl = $('#total');
-    const scoreEl = $('#score');
-    const bestEl = $('#best');
-    const punkterEl = $('#punkter');
-    const optionsEl = $('#options');
-    const feedbackEl = $('#feedback');
-    const nextBtn = $('#next');
-    const hintBtn = $('#hint');
-    const confetti = $('#confetti');
-    const hardToggle = $('#hard');
-    const autoNextToggle = $('#autoNext');
-    const bar = $('#bar');
+/* ===== DOM refs ===== */
+const root = document.getElementById('itdd-game-embed');
+const startBtn = $('#start', root);
+const shuffleBtn = $('#shuffleBtn', root);
+const game = $('#game', root);
+const roundEl = $('#round', root);
+const totalEl = $('#total', root);
+const scoreEl = $('#score', root);
+const bestEl = $('#best', root);
+const punkterEl = $('#punkter', root);
+const optionsEl = $('#options', root);
+const feedbackEl = $('#feedback', root);
+const nextBtn = $('#next', root);
+const hintBtn = $('#hint', root);
+const confetti = $('#confetti', root);
+const hardToggle = $('#hard', root);
+const autoNextToggle = $('#autoNext', root);
+const bar = $('#bar', root);
+const introEl = $('#intro', root);
 
-    bestEl.textContent = best;
+/* ===== Init ===== */
+bestEl.textContent = best;
 
-    function startGame(){
-      rounds = shuffle(PEOPLE);
-      step = 0; score = 0; clearTimeout(autoTimer);
-      totalEl.textContent = rounds.length;
-      scoreEl.textContent = score;
-      $('#intro').hidden = true;
-      startBtn.disabled = true;
-      game.hidden = false;
-      setBar();
-      renderRound();
-    }
+/* ===== Logic ===== */
+function setBar(){
+  const pct = rounds.length ? (step/rounds.length)*100 : 0;
+  bar.style.width = pct + '%';
+}
 
-    function setBar(){
-      const pct = rounds.length ? (step/rounds.length)*100 : 0;
-      bar.style.width = pct + '%';
-    }
+function startGame(){
+  rounds = shuffle(PEOPLE);
+  step = 0; score = 0; clearTimeout(autoTimer);
+  totalEl.textContent = rounds.length;
+  scoreEl.textContent = score;
+  introEl.hidden = true;
+  startBtn.disabled = true;
+  startBtn.hidden = true;
+  game.hidden = false;
+  setBar();
+  renderRound();
+}
 
-    function renderRound(){
-      const current = rounds[step];
-      roundEl.textContent = step + 1;
-      feedbackEl.textContent = '';
-      nextBtn.disabled = true;
+function renderRound(){
+  const current = rounds[step];
+  roundEl.textContent = step + 1;
+  feedbackEl.textContent = '';
+  nextBtn.disabled = true;
 
-      // vis punkter (evt. svær tilstand: bland og vis 2 af 3)
-      punkterEl.innerHTML = '';
-      let pts = [...current.punkter];
-      if(hardToggle.checked){ pts = shuffle(pts).slice(0,2); }
-      pts.forEach(p => { const li = document.createElement('li'); li.textContent = p; punkterEl.appendChild(li); });
+  // Vis punkter (i svær tilstand: bland og vis 2 af 3)
+  let pts = [...current.punkter];
+  if(hardToggle.checked){ pts = shuffle(pts).slice(0,2); }
+  else { pts = [...current.punkter]; }
 
-      // lav svarmuligheder (sørg for at current er inkluderet)
-      const others = PEOPLE.filter(p => p.id !== current.id);
-      const opts = shuffle([current, ...sample(others, Math.min(3, others.length))]).slice(0, Math.min(4, PEOPLE.length));
+  punkterEl.innerHTML = '';
+  pts.forEach(t => { const li = document.createElement('li'); li.textContent = t; punkterEl.appendChild(li); });
 
-      optionsEl.innerHTML = '';
-      opts.forEach((o, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt';
-        btn.role = 'option';
-        btn.setAttribute('data-id', o.id);
-        btn.setAttribute('aria-label', o.navn + ', mulighed ' + (i+1));
-        btn.textContent = `${i+1}. ${o.navn}`;
-        btn.addEventListener('click', () => pick(o.id, btn, current.id));
-        btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); btn.click(); }});
-        optionsEl.appendChild(btn);
-      });
-      // Ikke auto‑focus første navn (så ingen "random" kant på fx Karina)
-    }
+  // Byg svarmuligheder (inkl. korrekt)
+  const others = PEOPLE.filter(p => p.id !== current.id);
+  const opts = shuffle([current, ...sample(others, Math.min(3, others.length))]).slice(0, Math.min(4, PEOPLE.length));
 
-    function pick(id, el, correctId){
-      // lås flere valg
-      $$('.opt').forEach(b => { b.disabled = true; b.setAttribute('aria-disabled','true'); });
+  optionsEl.innerHTML = '';
+  opts.forEach((o,i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt';
+    btn.setAttribute('role','option');
+    btn.setAttribute('data-id', o.id);
+    btn.setAttribute('aria-label', o.navn + ', mulighed ' + (i+1));
+    btn.textContent = (i+1)+'. '+o.navn;
+    // Ingen auto-focus på første (så ingen “tilfældig” kant)
+    btn.addEventListener('click', () => pick(o.id, btn, current.id));
+    btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); btn.click(); }});
+    optionsEl.appendChild(btn);
+  });
+}
 
-      clearTimeout(autoTimer);
-      const isCorrect = id === correctId;
-      if(isCorrect){
-        el.classList.add('correct');
-        el.setAttribute('aria-selected','true');
-        feedbackEl.textContent = 'Korrekt! 🎉';
-        score++; scoreEl.textContent = score; setBar();
-        burst();
-      } else {
-        el.classList.add('wrong');
-        feedbackEl.textContent = 'Ikke helt…';
-        $$('.opt').find(b => b.dataset.id === correctId)?.classList.add('correct');
-      }
-      nextBtn.disabled = false;
+function pick(id, el, correctId){
+  // Lås flere valg
+  $$('.opt', root).forEach(b => { b.disabled = true; b.setAttribute('aria-disabled','true'); });
 
-      // Auto‑næste efter kort pause (hvis slået til)
-      if(autoNextToggle.checked){
-        autoTimer = setTimeout(next, isCorrect ? 900 : 1100);
-      } else {
-        nextBtn.focus();
-      }
-    }
+  const isCorrect = id === correctId;
+  if(isCorrect){
+    clearTimeout(autoTimer);
+    el.classList.add('correct');
+    el.setAttribute('aria-selected','true');
+    feedbackEl.textContent = 'Korrekt! 🎉';
+    score++; scoreEl.textContent = score; setBar();
+    burst();
+  } else {
+    el.classList.add('wrong');
+    feedbackEl.textContent = 'Ikke helt…';
+    const correctBtn = $$('.opt', root).find(b => b.dataset.id === correctId);
+    if(correctBtn){ correctBtn.classList.add('correct'); }
+  }
 
-    function next(){
-      clearTimeout(autoTimer);
-      if(step < rounds.length - 1){
-        step++; setBar(); renderRound();
-      } else {
-        // slutskærm
-        optionsEl.innerHTML = '';
-        punkterEl.innerHTML = '';
-        feedbackEl.textContent = '';
-        const done = document.createElement('div');
-        done.innerHTML = `<h3>Færdig! 👏</h3><p class="muted">Din score: <b>${score}</b> / ${rounds.length}</p>`;
-        optionsEl.appendChild(done);
-        nextBtn.disabled = true;
-        const again = document.createElement('button');
-        again.className = 'btn primary';
-        again.textContent = 'Spil igen';
-        again.addEventListener('click', resetToIntro);
-        optionsEl.appendChild(again);
-        if(score > best){ best = score; localStorage.setItem('bestScore', String(best)); bestEl.textContent = best; }
-      }
-    }
+  nextBtn.disabled = false;
 
-    function resetToIntro(){
-      $('#intro').hidden=false; startBtn.disabled=false; game.hidden=true; bar.style.width='0%';
-    }
+  // Auto-næste
+  if(autoNextToggle.checked){
+    autoTimer = setTimeout(next, isCorrect ? 900 : 1100);
+  } else {
+    nextBtn.focus();
+  }
+}
 
-    function hint(){
-      const current = rounds[step];
-      const initials = current.navn.trim().split(' ').filter(Boolean).map(n=>n[0]).join('.') + '.';
-      feedbackEl.textContent = `Hint: Initialer = ${initials}`;
-    }
+function next(){
+  clearTimeout(autoTimer);
+  if(step < rounds.length - 1){
+    step++; setBar(); renderRound();
+  } else {
+    // Slutskærm
+    optionsEl.innerHTML = '';
+    punkterEl.innerHTML = '';
+    feedbackEl.textContent = `Færdig! Du fik ${score}/${rounds.length}.`;
+    if(score > best){ best = score; localStorage.setItem('itdd_bestScore', String(best)); bestEl.textContent = best; }
 
-    function burst(){
-      confetti.innerHTML = '';
-      const icons = ['🎉','✨','🎈','🥳'];
-      for(let i=0;i<14;i++){
-        const s = document.createElement('span');
-        s.textContent = icons[i % icons.length];
-        s.style.left = (Math.random()*120 - 60) + 'px';
-        s.style.setProperty('--x', (Math.random()*200 - 100) + 'px');
-        s.style.animationDelay = (Math.random()*0.1) + 's';
-        confetti.appendChild(s);
-        setTimeout(()=>s.remove(), 1400);
-      }
-    }
+    const again = document.createElement('button');
+    again.className = 'btn primary';
+    again.textContent = 'Spil igen';
+    again.addEventListener('click', resetToIntro);
+    optionsEl.appendChild(again);
+  }
+}
 
-    // Keyboard‑genveje: 1‑4 vælger, Enter går videre
-    window.addEventListener('keydown', (e)=>{
-      if(e.key>='1' && e.key<='4'){
-        const idx = Number(e.key)-1; const btn = $$('.opt')[idx]; if(btn && !btn.disabled){ btn.click(); }
-      } else if(e.key==='Enter'){
-        if(!game.hidden && !nextBtn.disabled){ next(); }
-        else if(startBtn && !startBtn.disabled){ startGame(); }
-      }
-    });
+function resetToIntro(){
+  introEl.hidden = false;
+  startBtn.hidden = false;
+  startBtn.disabled = false;
+  game.hidden = true;
+  bar.style.width = '0%';
+  feedbackEl.textContent = '';
+}
 
-    // Events
-    startBtn.addEventListener('click', startGame);
-    shuffleBtn.addEventListener('click', ()=>{ rounds = shuffle(PEOPLE); if(!game.hidden){ step=0; renderRound(); } });
-    nextBtn.addEventListener('click', next);
-    hintBtn.addEventListener('click', hint);
-  </script>
+function hint(){
+  const current = rounds[step];
+  const initials = current.navn.trim().split(' ').filter(Boolean).map(n=>n[0]).join('.') + '.';
+  feedbackEl.textContent = `Hint: Initialer = ${initials}`;
+}
+
+function burst(){
+  confetti.innerHTML = '';
+  const icons = ['🎉','✨','🎈','🥳'];
+  for(let i=0;i<14;i++){
+    const s = document.createElement('span');
+    s.textContent = icons[rand(icons.length)];
+    s.style.setProperty('--x', (rand(1)?'-':'') + (40 + rand(140)) + 'px');
+    s.style.transform = `translate(0,0)`;
+    confetti.appendChild(s);
+  }
+}
+
+/* Keyboard-genveje: 1-4 vælger, Enter går videre / starter */
+window.addEventListener('keydown', (e)=>{
+  const inGame = !game.hidden;
+  if(e.key>='1' && e.key<='4' && inGame){
+    const idx = Number(e.key)-1;
+    const btn = $$('.opt', root)[idx];
+    if(btn && !btn.disabled){ btn.click(); }
+  } else if(e.key==='Enter'){
+    if(inGame && !nextBtn.disabled){ next(); }
+    else if(!startBtn.hidden && !startBtn.disabled){ startGame(); }
+  }
+});
+
+/* Events */
+startBtn.addEventListener('click', startGame);
+shuffleBtn.addEventListener('click', ()=>{
+  rounds = shuffle(PEOPLE);
+  if(!game.hidden){ step = 0; score = 0; scoreEl.textContent = score; setBar(); renderRound(); }
+});
+nextBtn.addEventListener('click', next);
+hintBtn.addEventListener('click', hint);
+</script>
+
 </body>
 </html>
